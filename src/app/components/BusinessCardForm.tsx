@@ -1,254 +1,168 @@
 "use client"
 
-import type React from "react"
 import { useState } from "react"
-import { Button } from "./Button"
 import QRCode from "qrcode"
-import VCard from "vcard-creator"
-import QRCodeSVG from "qrcode-svg"
 
 interface BusinessCardFormProps {
-  setQrCodeData: (data: { pngUrl: string; epsUrl: string; fileName: string } | null) => void
+  setQrCodeData: (data: { url: string; fileName: string } | null) => void
+}
+
+interface ContactData {
+  name: string
+  surname: string
+  company: string
+  position: string
+  phone: string
+  email: string
+  website: string
 }
 
 export default function BusinessCardForm({ setQrCodeData }: BusinessCardFormProps) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+  const [contactData, setContactData] = useState<ContactData>({
+    name: "",
+    surname: "",
     company: "",
     position: "",
-    email: "",
     phone: "",
-    address: "",
-    website: "",
+    email: "",
+    website: ""
   })
+  const [pngUrl, setPngUrl] = useState<string | null>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+  const generateVCardData = (data: ContactData): string => {
+    return `BEGIN:VCARD
+VERSION:3.0
+N:${data.surname};${data.name}
+FN:${data.name} ${data.surname}
+ORG:${data.company}
+TITLE:${data.position}
+TEL:${data.phone}
+EMAIL:${data.email}
+URL:${data.website}
+END:VCARD`
+  }
+
+  const generateFileName = (data: ContactData): string => {
+    const fileName = `${data.name}_${data.surname}${data.company ? '_' + data.company : ''}`
+      .toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '')
+    return `${fileName}.png`
+  }
+
+  const generateQRCodePNG = async (content: string) => {
+    try {
+      const dataUrl = await QRCode.toDataURL(content, { type: "image/png", width: 256 })
+      const fileName = generateFileName(contactData)
+      setQrCodeData({ url: dataUrl, fileName })
+      setPngUrl(dataUrl)
+    } catch (error) {
+      console.error("Błąd generowania QR Code:", error)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const vCardData = generateVCardData(contactData)
+    await generateQRCodePNG(vCardData)
+  }
 
-    // Create vCard
-    let formattedWebsite = formData.website
-    if (formattedWebsite && !formattedWebsite.startsWith("http://") && !formattedWebsite.startsWith("https://")) {
-      formattedWebsite = "https://" + formattedWebsite
-    }
-
-    const vCard = new VCard()
-    vCard
-      .addName(formData.lastName, formData.firstName)
-      .addCompany(formData.company)
-      .addRole(formData.position)
-      .addEmail(formData.email)
-      .addPhoneNumber(formData.phone)
-      .addAddress("", "", formData.address, "", "", "", "")
-      .addURL(formattedWebsite)
-
-    const vCardString = vCard.toString()
-
-    try {
-      // Generate PNG QR code
-      const pngDataUrl = await QRCode.toDataURL(vCardString, {
-        errorCorrectionLevel: "M",
-        type: "image/png",
-        width: 900,
-        margin: 4,
-        color: {
-          dark: "#000000FF",
-          light: "#FFFFFFFF",
-        },
-      })
-
-      // Generate SVG QR code
-      const qrSvg = new QRCodeSVG({
-        content: vCardString,
-        width: 900,
-        height: 900,
-        padding: 4,
-        color: "#000000",
-        background: "#ffffff",
-        ecl: "L",
-      })
-
-      // Convert SVG to EPS
-      const svgString = qrSvg.svg()
-      const epsContent = `%!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 0 0 900 900
-%%Creator: vCard QR Generator
-%%EndComments
-/m {moveto} def
-/l {lineto} def
-/h {closepath} def
-/f {fill} def
-${svgString
-  .replace(/<\?xml.*?\?>/, "")
-  .replace(/<svg.*?>/, "")
-  .replace(/<\/svg>/, "")
-  .replace(/<rect/g, "0 0 900 900 rectfill")
-  .replace(/<path d="([^"]*)".*?\/>/g, (_, d) => {
-    return (
-      d
-        .split(/(?=[MLZ])/)
-        .map((cmd) => {
-          const type = cmd[0]
-          const coords = cmd
-            .slice(1)
-            .trim()
-            .split(/[,\s]+/)
-            .map(Number)
-          switch (type) {
-            case "M":
-              return `${coords[0]} ${900 - coords[1]} m`
-            case "L":
-              return `${coords[0]} ${900 - coords[1]} l`
-            case "Z":
-              return "h f"
-            default:
-              return ""
-          }
-        })
-        .join("\n") + "\n"
-    )
-  })}
-showpage
-%%EOF`
-
-      const epsBlob = new Blob([epsContent], { type: "application/postscript" })
-      const epsDataUrl = URL.createObjectURL(epsBlob)
-
-      const fileName = `${formData.firstName}_${formData.lastName}_${formData.company}`.replace(/\s+/g, "_")
-      setQrCodeData({ pngUrl: pngDataUrl, epsUrl: epsDataUrl, fileName })
-    } catch (err) {
-      console.error("Error generating QR code:", err)
-      setQrCodeData(null)
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setContactData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-            Imię
+    <div className="business-card-form p-4 border rounded-md">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label className="block">
+            Imię:
+            <input
+              type="text"
+              name="name"
+              value={contactData.name}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+              required
+            />
           </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Jan"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-            Nazwisko
+          <label className="block">
+            Nazwisko:
+            <input
+              type="text"
+              name="surname"
+              value={contactData.surname}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+              required
+            />
           </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Kowalski"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="company" className="block text-sm font-medium text-gray-700">
-            Firma
+          <label className="block">
+            Firma:
+            <input
+              type="text"
+              name="company"
+              value={contactData.company}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+            />
           </label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            value={formData.company}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Firma XYZ"
-          />
-        </div>
-        <div>
-          <label htmlFor="position" className="block text-sm font-medium text-gray-700">
-            Stanowisko
+          <label className="block">
+            Stanowisko:
+            <input
+              type="text"
+              name="position"
+              value={contactData.position}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+            />
           </label>
-          <input
-            type="text"
-            id="position"
-            name="position"
-            value={formData.position}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Specjalista ds. Marketingu"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
+          <label className="block">
+            Telefon:
+            <input
+              type="tel"
+              name="phone"
+              value={contactData.phone}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+              required
+            />
           </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="jan@przyklad.pl"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-            Telefon
+          <label className="block">
+            Email:
+            <input
+              type="email"
+              name="email"
+              value={contactData.email}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+              required
+            />
           </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="+48 123 456 789"
-          />
-        </div>
-        <div>
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-            Adres firmy
+          <label className="block">
+            Strona WWW:
+            <input
+              type="url"
+              name="website"
+              value={contactData.website}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded p-2"
+              placeholder="https://"
+            />
           </label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="ul. Przykładowa 123, 00-000 Warszawa"
-          />
         </div>
-        <div>
-          <label htmlFor="website" className="block text-sm font-medium text-gray-700">
-            Strona www
-          </label>
-          <input
-            type="text"
-            id="website"
-            name="website"
-            value={formData.website}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="www.przyklad.pl"
-          />
+        
+        <div className="flex justify-center mt-6">
+          <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+            Generuj Wizytówkę QR
+          </button>
         </div>
-      </div>
-      <div className="mt-6">
-        <Button type="submit">Generuj Kod QR</Button>
-      </div>
-    </form>
+      </form>
+    </div>
   )
 }
 
