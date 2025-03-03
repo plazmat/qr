@@ -162,7 +162,7 @@ END:VCARD`
               value={contactData.website}
               onChange={handleInputChange}
               className="mt-1 block w-full border rounded p-2"
-              placeholder="example.com"
+              placeholder="nazwa_strony.pl"
             />
           </label>
         </div>
