@@ -30,6 +30,8 @@ export default function BusinessCardForm({ setQrCodeData }: BusinessCardFormProp
   const [pngUrl, setPngUrl] = useState<string | null>(null)
 
   const generateVCardData = (data: ContactData): string => {
+    const websiteWithPrefix = data.website ? `https://${data.website}` : ''
+    
     return `BEGIN:VCARD
 VERSION:3.0
 N:${data.surname};${data.name}
@@ -38,7 +40,7 @@ ORG:${data.company}
 TITLE:${data.position}
 TEL:${data.phone}
 EMAIL:${data.email}
-URL:${data.website}
+URL:${websiteWithPrefix}
 END:VCARD`
   }
 
@@ -69,10 +71,19 @@ END:VCARD`
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setContactData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    
+    if (name === 'website') {
+      const cleanValue = value.replace(/^(https?:\/\/)/, '')
+      setContactData(prev => ({
+        ...prev,
+        [name]: cleanValue
+      }))
+    } else {
+      setContactData(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
   }
 
   return (
@@ -146,12 +157,12 @@ END:VCARD`
           <label className="block">
             Strona WWW:
             <input
-              type="url"
+              type="text"
               name="website"
               value={contactData.website}
               onChange={handleInputChange}
               className="mt-1 block w-full border rounded p-2"
-              placeholder="https://"
+              placeholder="example.com"
             />
           </label>
         </div>
