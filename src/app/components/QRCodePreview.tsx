@@ -14,7 +14,7 @@ export default function QRCodePreview({ qrCodeData }: QRCodePreviewProps) {
           <p className="text-gray-500">Podgląd Kodu QR</p>
         )}
       </div>
-      <p className="mt-4 text-sm text-gray-600">Zeskanuj, aby zapisać moje dane kontaktowe</p>
+      
       {qrCodeData && (
         <div className="mt-4 space-y-2">
           <Button
@@ -28,7 +28,7 @@ export default function QRCodePreview({ qrCodeData }: QRCodePreviewProps) {
             }}
             className="w-full"
           >
-            Pobierz Kod QR PNG
+            Pobierz QR w formacie PNG
           </Button>
         </div>
       )}

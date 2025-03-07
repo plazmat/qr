@@ -173,7 +173,7 @@ END:VCARD`
             type="submit" 
             className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 font-medium"
           >
-            Generuj Wizytówkę QR
+            Generuj kod QR
           </button>
         </div>
       </form>

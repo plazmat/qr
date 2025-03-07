@@ -7,7 +7,7 @@ import type React from "react"
 const inter = Inter({ subsets: ["latin", "latin-ext"] })
 
 export const metadata: Metadata = {
-  title: "AITRAIN Generator QR",
+  title: "Naprawdę darmowy generator kodów QR",
   description: "Wygeneruj kod QR vCard dla swojej wizytówki",
 }
 
