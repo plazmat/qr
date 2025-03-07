@@ -54,7 +54,7 @@ END:VCARD`
 
   const generateQRCodePNG = async (content: string) => {
     try {
-      const dataUrl = await QRCode.toDataURL(content, { type: "image/png", width: 256 })
+      const dataUrl = await QRCode.toDataURL(content, { type: "image/png", width: 1024 })
       const fileName = generateFileName(contactData)
       setQrCodeData({ url: dataUrl, fileName })
       setPngUrl(dataUrl)
@@ -87,88 +87,92 @@ END:VCARD`
   }
 
   return (
-    <div className="business-card-form p-4 border rounded-md">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="business-card-form p-6 border rounded-lg shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Twoja Wizytówka QR</h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <label className="block">
-            Imię:
+            <span className="text-gray-700 font-medium">Imię:</span>
             <input
               type="text"
               name="name"
               value={contactData.name}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               required
             />
           </label>
           <label className="block">
-            Nazwisko:
+            <span className="text-gray-700 font-medium">Nazwisko:</span>
             <input
               type="text"
               name="surname"
               value={contactData.surname}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               required
             />
           </label>
           <label className="block">
-            Firma:
+            <span className="text-gray-700 font-medium">Firma:</span>
             <input
               type="text"
               name="company"
               value={contactData.company}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
           </label>
           <label className="block">
-            Stanowisko:
+            <span className="text-gray-700 font-medium">Stanowisko:</span>
             <input
               type="text"
               name="position"
               value={contactData.position}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
           </label>
           <label className="block">
-            Telefon:
+            <span className="text-gray-700 font-medium">Telefon:</span>
             <input
               type="tel"
               name="phone"
               value={contactData.phone}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               required
             />
           </label>
           <label className="block">
-            Email:
+            <span className="text-gray-700 font-medium">Email:</span>
             <input
               type="email"
               name="email"
               value={contactData.email}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               required
             />
           </label>
           <label className="block">
-            Strona WWW:
+            <span className="text-gray-700 font-medium">Strona WWW:</span>
             <input
               type="text"
               name="website"
               value={contactData.website}
               onChange={handleInputChange}
-              className="mt-1 block w-full border rounded p-2"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               placeholder="nazwa_strony.pl"
             />
           </label>
         </div>
         
-        <div className="flex justify-center mt-6">
-          <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+        <div className="flex justify-center mt-8">
+          <button 
+            type="submit" 
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 font-medium"
+          >
             Generuj Wizytówkę QR
           </button>
         </div>
