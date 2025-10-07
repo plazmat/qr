@@ -8,8 +8,33 @@ import type React from "react"
 const inter = Inter({ subsets: ["latin", "latin-ext"] })
 
 export const metadata: Metadata = {
-  title: "Naprawdę darmowy generator kodów QR",
-  description: "Wygeneruj kod QR vCard dla swojej wizytówki",
+  title: "Darmowy generator QR – szybkie tworzenie kodów QR vCard",
+  description: "Darmowy generator QR online. Twórz kody QR vCard i udostępniaj kontakty w kilka sekund. Bez rejestracji, działa w przeglądarce.",
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || "/",
+  },
+  openGraph: {
+    title: "Darmowy generator QR – szybkie tworzenie kodów QR vCard",
+    description: "Darmowy generator QR online. Twórz kody QR vCard i udostępniaj kontakty w kilka sekund. Bez rejestracji, działa w przeglądarce.",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "/",
+    siteName: "Darmowy generator QR",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Darmowy generator QR",
+      },
+    ],
+    locale: "pl_PL",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Darmowy generator QR – szybkie tworzenie kodów QR vCard",
+    description: "Darmowy generator QR online. Twórz kody QR vCard i udostępniaj kontakty w kilka sekund. Bez rejestracji, działa w przeglądarce.",
+    images: ["/logo.png"],
+  },
 }
 
 export default function RootLayout({
