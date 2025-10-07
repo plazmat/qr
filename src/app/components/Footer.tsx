@@ -8,6 +8,7 @@ export default function Footer() {
       </div>
       <div className="text-center md:text-right">
         <a href="#" id="openCookieSettings" className="mr-4 underline hover:no-underline">Ustawienia cookies</a>
+        <Link href="/polityka-prywatnosci" className="mr-4 underline hover:no-underline">Polityka prywatności</Link>
         Created with{" "}
         <Link
           href="https://aitrain.pl"
