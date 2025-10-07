@@ -7,6 +7,7 @@ export default function Footer() {
         Wszystkie operacje wykonywane są wyłącznie w Twojej przeglądarce. Dane wprowadzone w formularzu nie są przesyłane ani przechowywane na żadnym serwerze.
       </div>
       <div className="text-center md:text-right">
+        <a href="#" id="openCookieSettings" className="mr-4 underline hover:no-underline">Ustawienia cookies</a>
         Created with{" "}
         <Link
           href="https://aitrain.pl"
