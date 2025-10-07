@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import Script from "next/script"
 
 export const metadata: Metadata = {
@@ -10,6 +11,9 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="container mx-auto py-6 px-4">
       <h1 className="text-2xl font-bold mb-4">Polityka prywatności</h1>
+      <p className="mb-6">
+        <Link href="/" className="underline hover:no-underline">← Wróć na stronę główną</Link>
+      </p>
       <p className="mb-3">
         Szanujemy Twoją prywatność. Ta strona wyjaśnia, jak korzystamy z plików cookie i innych
         technologii w celu analityki oraz personalizacji, zgodnie z Consent Mode v2.
