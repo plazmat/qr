@@ -10,13 +10,14 @@ const inter = Inter({ subsets: ["latin", "latin-ext"] })
 export const metadata: Metadata = {
   title: "Darmowy generator QR – szybkie tworzenie kodów QR vCard",
   description: "Darmowy generator QR online. Twórz kody QR vCard i udostępniaj kontakty w kilka sekund. Bez rejestracji, działa w przeglądarce.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://qr.aitrain.pl"),
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || "/",
+    canonical: "/",
   },
   openGraph: {
     title: "Darmowy generator QR – szybkie tworzenie kodów QR vCard",
     description: "Darmowy generator QR online. Twórz kody QR vCard i udostępniaj kontakty w kilka sekund. Bez rejestracji, działa w przeglądarce.",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "/",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://qr.aitrain.pl",
     siteName: "Darmowy generator QR",
     images: [
       {
