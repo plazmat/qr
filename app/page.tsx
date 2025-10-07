@@ -15,7 +15,7 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         {/* Intro SEO */}
         <section className="mb-10">
-          <p className="text-lg text-gray-800">
+          <p className="text-lg text-gray-800 mb-6">
             Nasz <strong>darmowy generator QR</strong> pozwala w kilka sekund stworzyć czytelny kod QR vCard
             z danymi kontaktowymi. Skonfiguruj, wygeneruj i pobierz plik PNG, aby dodać kod do wizytówki,
             stopki e‑mail lub materiałów firmowych.
@@ -59,23 +59,23 @@ export default function Home() {
         {/* FAQ */}
         <section className="mt-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">FAQ – najczęstsze pytania</h2>
-          <div className="space-y-4 text-gray-800">
-            <div>
-              <h3 className="font-semibold">Czy generator jest naprawdę darmowy?</h3>
-              <p>Tak. Narzędzie jest bezpłatne i działa bez rejestracji.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Czy moje dane są wysyłane na serwer?</h3>
-              <p>Nie. Wszystko przetwarzane jest lokalnie w Twojej przeglądarce.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Jakie formaty obsługujecie?</h3>
-              <p>Obecnie vCard. Wkrótce dodamy wsparcie dla URL, Wi‑Fi, SMS.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Czy mogę edytować dane po wygenerowaniu?</h3>
-              <p>Tak, możesz dowolnie poprawić formularz i wygenerować nowy kod.</p>
-            </div>
+          <div className="space-y-3 text-gray-800">
+            <details className="bg-white border rounded-md p-4">
+              <summary className="font-semibold cursor-pointer select-none">Czy generator jest naprawdę darmowy?</summary>
+              <div className="mt-2 text-gray-700">Tak. Narzędzie jest bezpłatne i działa bez rejestracji.</div>
+            </details>
+            <details className="bg-white border rounded-md p-4">
+              <summary className="font-semibold cursor-pointer select-none">Czy moje dane są wysyłane na serwer?</summary>
+              <div className="mt-2 text-gray-700">Nie. Wszystko przetwarzane jest lokalnie w Twojej przeglądarce.</div>
+            </details>
+            <details className="bg-white border rounded-md p-4">
+              <summary className="font-semibold cursor-pointer select-none">Jakie formaty obsługujecie?</summary>
+              <div className="mt-2 text-gray-700">Obecnie vCard. Wkrótce dodamy wsparcie dla URL, Wi‑Fi, SMS.</div>
+            </details>
+            <details className="bg-white border rounded-md p-4">
+              <summary className="font-semibold cursor-pointer select-none">Czy mogę edytować dane po wygenerowaniu?</summary>
+              <div className="mt-2 text-gray-700">Tak, możesz dowolnie poprawić formularz i wygenerować nowy kod.</div>
+            </details>
           </div>
         </section>
       </main>

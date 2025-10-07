@@ -11,6 +11,7 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="container mx-auto py-6 px-4">
       <h1 className="text-2xl font-bold mb-4">Polityka prywatności</h1>
+      <p className="text-sm text-gray-600 mb-2">Data aktualizacji: 07.10.2025</p>
       <p className="mb-6">
         <Link href="/" className="underline hover:no-underline">← Wróć na stronę główną</Link>
       </p>
