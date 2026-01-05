@@ -7,7 +7,7 @@ export default function Footer() {
         Wszystkie operacje wykonywane są wyłącznie w Twojej przeglądarce. Dane wprowadzone w formularzu nie są przesyłane ani przechowywane na żadnym serwerze.
       </div>
       <div className="text-center md:text-right">
-        <a href="#" id="openCookieSettings" className="mr-4 underline hover:no-underline">Ustawienia cookies</a>
+        <button type="button" data-cc="show-preferencesModal" className="mr-4 underline hover:no-underline bg-transparent border-0 p-0 text-gray-600 cursor-pointer">Ustawienia cookies</button>
         <Link href="/polityka-prywatnosci" className="mr-4 underline hover:no-underline">Polityka prywatności</Link>
         Created with{" "}
         <Link

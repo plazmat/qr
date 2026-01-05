@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Script from "next/script"
+
 
 export const metadata: Metadata = {
   title: "Polityka prywatności",
@@ -11,7 +11,7 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="container mx-auto py-6 px-4">
       <h1 className="text-2xl font-bold mb-4">Polityka prywatności</h1>
-      <p className="text-sm text-gray-600 mb-2">Data aktualizacji: 07.10.2025</p>
+      <p className="text-sm text-gray-600 mb-2">Data aktualizacji: 05.01.2026</p>
       <p className="mb-6">
         <Link href="/" className="underline hover:no-underline">← Wróć na stronę główną</Link>
       </p>
@@ -24,9 +24,9 @@ export default function PrivacyPolicyPage() {
         możesz zmienić swoją decyzję dotyczącą zgód, otwierając ustawienia cookies.
       </p>
       <p className="mb-6">
-        <a href="#" id="openCookieSettingsInline" className="underline hover:no-underline">
+        <button type="button" data-cc="show-preferencesModal" className="underline hover:no-underline bg-transparent border-0 p-0 text-indigo-600 cursor-pointer">
           Ustawienia cookies
-        </a>
+        </button>
       </p>
 
       <h2 className="text-xl font-semibold mb-2">Dane przetwarzane lokalnie</h2>
@@ -40,25 +40,6 @@ export default function PrivacyPolicyPage() {
         Po wyrażeniu zgody włączamy Google Analytics 4, aby lepiej rozumieć korzystanie z serwisu i
         móc go ulepszać. Do tego czasu skrypt analityczny nie jest ładowany.
       </p>
-
-      <Script id="open-cookie-settings-inline" strategy="afterInteractive">
-        {`
-  (function(){
-    var link = document.getElementById('openCookieSettingsInline');
-    if (link) {
-      link.addEventListener('click', function(e){
-        e.preventDefault();
-        var opener = document.getElementById('openCookieSettings');
-        if (opener) opener.click();
-        else {
-          var banner = document.getElementById('cookieBanner');
-          if (banner) banner.style.display = 'block';
-        }
-      });
-    }
-  })();
-        `}
-      </Script>
     </main>
   )
 }
