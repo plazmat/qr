@@ -34,12 +34,11 @@ const logConsent = (cookie: { categories: string[]; consentId: string }) => {
 const updateGtagConsent = (categories: string[]) => {
     if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
         const hasAnalytics = categories.includes('analytics');
-        const hasAdvertising = categories.includes('advertising');
 
         const consentState = {
-            ad_storage: hasAdvertising ? 'granted' : 'denied',
-            ad_user_data: hasAdvertising ? 'granted' : 'denied',
-            ad_personalization: hasAdvertising ? 'granted' : 'denied',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
             analytics_storage: hasAnalytics ? 'granted' : 'denied',
             personalization_storage: 'denied',
             functionality_storage: 'granted',
@@ -81,9 +80,6 @@ export const initCookieConsent = () => {
             necessary: { readOnly: true, enabled: true },
             analytics: {
                 autoClear: { cookies: [{ name: /^_ga/ }, { name: '_gid' }] }
-            },
-            advertising: {
-                autoClear: { cookies: [{ name: /^_gcl/ }, { name: /^__gads/ }] }
             }
         },
 
@@ -116,11 +112,6 @@ export const initCookieConsent = () => {
                                 title: 'Analityka',
                                 description: 'Pomagają nam zrozumieć, jak korzystasz ze strony.',
                                 linkedCategory: 'analytics'
-                            },
-                            {
-                                title: 'Reklama',
-                                description: 'Służą do personalizacji reklam.',
-                                linkedCategory: 'advertising'
                             }
                         ]
                     }
@@ -150,11 +141,6 @@ export const initCookieConsent = () => {
                                 title: 'Analytics',
                                 description: 'Cookies used for analytics.',
                                 linkedCategory: 'analytics'
-                            },
-                            {
-                                title: 'Advertising',
-                                description: 'Cookies used for advertising.',
-                                linkedCategory: 'advertising'
                             }
                         ]
                     }
