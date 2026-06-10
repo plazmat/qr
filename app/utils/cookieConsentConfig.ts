@@ -12,6 +12,21 @@ declare global {
 // Zawsze aktualizuj tę datę po zmianach w treści polityki prywatności
 const POLICY_VERSION = '2026-01-05';
 
+const GA_MEASUREMENT_ID = 'G-WGTZCF8H3Q';
+
+// Skrypt gtag.js ładujemy dopiero po zgodzie na analitykę,
+// zgodnie z deklaracją w polityce prywatności.
+const loadGtagScript = () => {
+    if (document.getElementById('ga-gtag')) return;
+    const script = document.createElement('script');
+    script.id = 'ga-gtag';
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
+    document.head.appendChild(script);
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID);
+};
+
 const logConsent = (cookie: { categories: string[]; consentId: string }) => {
     try {
         const URL = 'https://script.google.com/macros/s/AKfycbyrnJUqxRQzZWBddD9bT6NR6nXchJQwsEooJUmt4Vjmk8_gSnY6LufQyn8z3C9uZQ37/exec';
@@ -46,6 +61,10 @@ const updateGtagConsent = (categories: string[]) => {
         };
 
         window.gtag('consent', 'update', consentState);
+
+        if (hasAnalytics) {
+            loadGtagScript();
+        }
     }
 };
 

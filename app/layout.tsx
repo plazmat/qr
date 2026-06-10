@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Footer from "../src/app//components/Footer"
-import Script from "next/script"
+import Footer from "../src/app/components/Footer"
 import type React from "react"
 import CookieConsentBanner from "./components/CookieConsent"
 
@@ -67,24 +66,7 @@ export default function RootLayout({
             `
           }}
         />
-        {/* Google Analytics - load explicitly or let GTM handle it if used. The prompt implies explicit GA loading is separate but here we only set default consent. The previous code had loadGtag. The prompt example just shows Script id="google-analytics". I will keep the GA loading if it was separate, but wait, the previous code had custom load logic inside the banner logic. I should probably restore a basic GA script if needed, or assume the user will handle it?
-           The prompt says "Tu dopiero ładujemy GTM / GA4".
-           The previous layout had: loadGtag('G-WGTZCF8H3Q') inside the logic. 
-           So I should add the GA4 script tag here as well, respecting the consent mode.
-        */}
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          src={'https://www.googletagmanager.com/gtag/js?id=G-WGTZCF8H3Q'}
-        />
-        <Script id="google-analytics-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-WGTZCF8H3Q');
-          `}
-        </Script>
+        {/* gtag.js jest doładowywany dopiero po zgodzie na analitykę – zob. app/utils/cookieConsentConfig.ts */}
       </head>
       <body className={inter.className}>
         <CookieConsentBanner />

@@ -29,18 +29,27 @@ export default function BusinessCardForm({ setQrCodeData }: BusinessCardFormProp
   })
   const [pngUrl, setPngUrl] = useState<string | null>(null)
 
+  // Escapowanie znaków specjalnych zgodnie ze specyfikacją vCard 3.0 (RFC 2426)
+  const escapeVCardValue = (value: string): string =>
+    value
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r?\n/g, "\\n")
+
   const generateVCardData = (data: ContactData): string => {
     const websiteWithPrefix = data.website ? `https://${data.website}` : ''
-    
+    const e = escapeVCardValue
+
     return `BEGIN:VCARD
 VERSION:3.0
-N:${data.surname};${data.name}
-FN:${data.name} ${data.surname}
-ORG:${data.company}
-TITLE:${data.position}
-TEL:${data.phone}
-EMAIL:${data.email}
-URL:${websiteWithPrefix}
+N:${e(data.surname)};${e(data.name)}
+FN:${e(data.name)} ${e(data.surname)}
+ORG:${e(data.company)}
+TITLE:${e(data.position)}
+TEL:${e(data.phone)}
+EMAIL:${e(data.email)}
+URL:${e(websiteWithPrefix)}
 END:VCARD`
   }
 
